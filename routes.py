@@ -1,8 +1,20 @@
 # Requires:
+# yum groupinstall "Development Tools"
+# yum install python-pip
+# yum install python-ldap
+# yum install python-devel
+# yum install openldap-devel
 # pip install flask-login
 # pip install wtforms
 # pip install flask-ldap-login
+'''
+nano /usr/lib/python2.7/site-packages/flask_ldap_login/forms.py
+#### CHANGE
+#from flask.ext.wtf import Form
+import wtforms
+from wtforms import Form
 
+'''
 
 from flask import Flask, request, render_template
 from flask_login import LoginManager
