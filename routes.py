@@ -6,27 +6,16 @@
 # yum install openldap-devel
 # pip install flask-login
 # pip install wtforms
-# pip install flask-ldap-login
+# pip install flask-ldap3-login
 # pip install flask_wtf
-'''
-nano /usr/lib/python2.7/site-packages/flask_ldap_login/forms.py
-#### CHANGE
-#from flask.ext.wtf import Form
-from flask_wtf import Form
 
-'''
-
-from flask import Flask, request, render_template
-from flask_login import LoginManager
-from flask_login import UserMixin
-from flask_login import login_user
-#from wtforms import Form
-#from wtforms import TextField
-#from wtforms import PasswordField
-from flask_ldap_login import LDAPLoginForm, LDAPLoginManager
+from flask import Flask, url_for
+from flask_ldap3_login import LDAP3LoginManager
+from flask_login import LoginManager, login_user, UserMixin, current_user
+from flask import render_template, redirect
+from flask.ext.ldap3_login.forms import LDAPLoginForm
 
 from ldap_config import LDAP_SETTINGS
-
 
 app = Flask(__name__)      
 app.secret_key = 'dank warhammer'
@@ -79,7 +68,7 @@ def home():
     if not current_user or current_user.is_anonymous:
         return redirect(url_for('login'))
 
-    return render_template_string('home.html')
+    return render_template('home.html')
 
 @app.route('/about')
 def about():
@@ -101,7 +90,7 @@ def login():
         login_user(form.user) # Tell flask-login to log them in.
         return redirect('/')  # Send them home
 
-    return render_template_string('login.html', form=form)
+    return render_template('login.html', form=form)
 
 if __name__ == '__main__':
   app.run(debug=True, host='0.0.0.0', port=5001)
