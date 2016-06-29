@@ -7,12 +7,12 @@
 # pip install flask-login
 # pip install wtforms
 # pip install flask-ldap-login
+# pip install flask_wtf
 '''
 nano /usr/lib/python2.7/site-packages/flask_ldap_login/forms.py
 #### CHANGE
 #from flask.ext.wtf import Form
-import wtforms
-from wtforms import Form
+from flask_wtf import Form
 
 '''
 
@@ -20,14 +20,15 @@ from flask import Flask, request, render_template
 from flask_login import LoginManager
 from flask_login import UserMixin
 from flask_login import login_user
-from wtforms import Form
-from wtforms import TextField
-from wtforms import PasswordField
+#from wtforms import Form
+#from wtforms import TextField
+#from wtforms import PasswordField
 from flask_ldap_login import LDAPLoginForm, LDAPLoginManager
 
 from ldap_config import LDAP
 
 app = Flask(__name__)      
+app.secret_key = 'dank warhammer'
 login_manager = LoginManager(app)
 
 users = {}
@@ -44,11 +45,11 @@ class User(UserMixin):
     def __init__(self):
         pass
 
-class LoginForm(Form):
-    username = TextField('Username')
-    password = PasswordField('Password')
-    def validate_on_submit(self):
-        return True
+#class LoginForm(Form):
+#    username = TextField('Username')
+#    password = PasswordField('Password')
+#    def validate_on_submit(self):
+#        return True
 
 @app.route('/')
 def home():
@@ -75,6 +76,4 @@ def ldap_login():
     return render_template('login.html', form=form)
 
 if __name__ == '__main__':
-  username = 'LDAPLookups'
-  password = 'P@ssw0rd'
   app.run(debug=True, host='0.0.0.0', port=5001)
